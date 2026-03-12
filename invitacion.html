@@ -1,0 +1,288 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta property="og:title" content="🎮 Cumpleaños Edwin Yoel">
+<meta property="og:description" content="Misión desbloqueada: Fiesta - Sábado 28 de marzo 4:00 PM">
+<meta property="og:image" content="https://hosnavesver-pixel.github.io/invitacion-edwin/preview.png">
+<meta property="og:type" content="website"><title>Arcade Birthday Edwin Yoel</title><style>
+
+body{
+margin:0;
+background:radial-gradient(circle,#020202,#000);
+font-family:'Courier New', monospace;
+color:#00ffff;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+}
+
+/* gabinete */
+
+.arcade{
+width:380px;
+background:#111;
+border:12px solid #00ffff;
+padding:20px;
+text-align:center;
+position:relative;
+box-shadow:0 0 20px #00ffff,0 0 60px #00ffff;
+overflow:hidden;
+}
+
+/* marcador */
+
+.scoreboard{
+display:flex;
+justify-content:space-between;
+font-size:14px;
+margin-bottom:10px;
+}
+
+/* botones */
+
+button{
+background:#00ffff;
+border:none;
+padding:12px;
+margin-top:15px;
+font-weight:bold;
+cursor:pointer;
+font-family:'Courier New';
+}
+
+button:hover{
+background:#00ffaa;
+transform:scale(1.05);
+}
+
+/* monedas */
+
+.coin{
+position:absolute;
+font-size:20px;
+top:-20px;
+animation:coin 6s linear;
+}
+
+@keyframes coin{
+0%{transform:translateY(0)}
+100%{transform:translateY(380px)}
+}
+
+/* estrellas */
+
+.star{
+position:absolute;
+color:#00ffff;
+animation:star 8s linear;
+}
+
+@keyframes star{
+0%{transform:translateY(-10px);opacity:0}
+50%{opacity:1}
+100%{transform:translateY(380px);opacity:0}
+}
+
+/* blink */
+
+.blink{
+animation:blink 1s infinite;
+}
+
+@keyframes blink{
+0%{opacity:1}
+50%{opacity:0}
+100%{opacity:1}
+}
+
+/* loading */
+
+.loadingbar{
+width:100%;
+height:12px;
+background:#222;
+margin-top:15px;
+}
+
+.loading{
+height:12px;
+background:#00ffff;
+width:0%;
+animation:load 3s linear forwards;
+}
+
+@keyframes load{
+from{width:0}
+to{width:100%}
+}
+
+.timer{
+margin-top:10px;
+color:#00ffaa;
+font-size:15px;
+}
+
+.big{
+font-size:22px;
+font-weight:bold;
+letter-spacing:2px;
+}
+
+</style><script>
+
+/* SCORE */
+
+let score=0;
+
+function sumarScore(){
+
+score+=10;
+
+document.getElementById("score").innerText=
+score.toString().padStart(6,"0");
+
+}
+
+/* estrellas */
+
+function estrellas(){
+
+const star=document.createElement("div");
+
+star.className="star";
+
+star.innerHTML="✦";
+
+star.style.left=Math.random()*340+"px";
+
+star.style.fontSize=(10+Math.random()*12)+"px";
+
+document.getElementById("arcade").appendChild(star);
+
+setTimeout(()=>star.remove(),8000);
+
+}
+
+setInterval(estrellas,1200);
+
+/* monedas */
+
+function moneda(){
+
+const coin=document.createElement("div");
+
+coin.className="coin";
+
+coin.innerHTML="🪙";
+
+coin.style.left=Math.random()*340+"px";
+
+document.getElementById("arcade").appendChild(coin);
+
+sumarScore();
+
+setTimeout(()=>coin.remove(),6000);
+
+}
+
+setInterval(moneda,3000);
+
+/* sonido */
+
+function beep(){
+
+const ctx=new (window.AudioContext||window.webkitAudioContext)();
+const osc=ctx.createOscillator();
+const gain=ctx.createGain();
+
+osc.type="square";
+osc.frequency.value=650;
+
+osc.connect(gain);
+gain.connect(ctx.destination);
+
+osc.start();
+
+gain.gain.exponentialRampToValueAtTime(
+0.0001,
+ctx.currentTime+0.25
+);
+
+}
+
+/* start */
+
+function startGame(){
+
+beep();
+
+document.getElementById("intro").style.display="none";
+document.getElementById("level").style.display="block";
+
+setTimeout(()=>{
+
+document.getElementById("level").style.display="none";
+document.getElementById("invite").style.display="block";
+
+},3000);
+
+}
+
+/* contador */
+
+function countdown(){
+
+const fecha=new Date("March 28, 2026 16:00:00").getTime();
+
+setInterval(function(){
+
+const ahora=new Date().getTime();
+
+const diferencia=fecha-ahora;
+
+const dias=Math.floor(diferencia/(1000*60*60*24));
+const horas=Math.floor((diferencia%(1000*60*60*24))/(1000*60*60));
+const minutos=Math.floor((diferencia%(1000*60*60))/(1000*60));
+
+document.getElementById("timer").innerHTML=
+"FALTAN "+dias+" DÍAS "+horas+" HORAS "+minutos+" MIN";
+
+},1000);
+
+}
+
+window.onload=function(){
+
+countdown();
+
+setTimeout(()=>{
+document.getElementById("loading").style.display="none";
+document.getElementById("intro").style.display="block";
+},3000);
+
+}
+
+/* maps */
+
+function abrirMapa(){
+window.open("https://maps.google.com/?q=Av.+Juárez+29,+El+Cerrito,+Cd.+López+Mateos");
+}
+
+/* whatsapp */
+
+function confirmar(){
+window.open("https://wa.me/5215635531073?text=Confirmo%20asistencia%20al%20cumpleaños%20de%20Edwin%20Yoel%20🎮");
+}
+
+</script></head><body><div class="arcade" id="arcade"><div class="scoreboard">
+<div>SCORE <span id="score">000000</span></div>
+<div>LEVEL 11</div>
+</div><div id="loading"><h2 class="big">LOADING PLAYER</h2><div class="loadingbar">
+<div class="loading"></div>
+</div></div><div id="intro" style="display:none"><h2 class="big">ARCADE SYSTEM</h2><p class="blink">PRESS START</p><button onclick="startGame()">🎮 START GAME</button>
+
+</div><div id="level" style="display:none"><h2 class="big">LEVEL UP</h2><p>PLAYER</p><h3>EDWIN YOEL</h3><p>LEVEL 11 UNLOCKED</p></div><div id="invite" style="display:none"><h2 class="big">🎉 MISIÓN: FIESTA 🎉</h2><p>PLAYER</p><h3>EDWIN YOEL</h3><p>FECHA</p><p>SÁBADO 28 DE MARZO</p><p>HORA</p><p>4:00 PM</p><p>UBICACIÓN</p><p>Av. Juárez 29</p><div class="timer" id="timer"></div><button onclick="abrirMapa()">📍 VER UBICACIÓN</button>
+
+<button onclick="confirmar()">🎮 CONFIRMAR MISIÓN</button>
+
+</div></div></body></html>
